@@ -5,10 +5,10 @@
 
 #include <WiFi.h>
 
-const char* ssid = "AWL";      // De WiFi-SSID
-const char* password = "4wLPR3shared!@-";  // De WiFi-wachtwoord
-const char* telnetServerIP = "10.38.4.171";  // IP van de Telnet-server
-const uint16_t telnetServerPort = 7170;      // Telnet-server poort
+const char* ssid = "SSID";      // De WiFi-SSID
+const char* password = "PASSWORD";  // De WiFi-wachtwoord
+const char* telnetServerIP = "IP";  // IP van de Telnet-server
+const uint16_t telnetServerPort = 0000;      // Telnet-server poort
 WiFiClient telnetClient;
 
 

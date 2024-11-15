@@ -21,11 +21,11 @@ const int btn1P = 21;
 const int btn2P = 20;
 
 //wifi setup
-const char* ssid = "AWL";      // De WiFi-SSID                                        AWL
-const char* password = "4wLPR3shared!@-";  // Het WiFi-wachtwoord                     4wLPR3shared!@-
-const char* telnetServerIP = "10.38.4.171";  // IP van de Telnet-server               10.38.4.171
-const uint16_t telnetServerPort = 7170;      // Telnet-server poort                   7170
-const char* telnetWW = "adept";  
+const char* ssid = "SSID";      // De WiFi-SSID                                       
+const char* password = "PASSWORD";  // Het WiFi-wachtwoord                    
+const char* telnetServerIP = "SERVERIP";  // IP van de Telnet-server               
+const uint16_t telnetServerPort = 0000;      // Telnet-server poort                   
+const char* telnetWW = "PASSWORD";  
 WiFiClient telnetClient;
 
 bool isTelnetVerbonden = false;
