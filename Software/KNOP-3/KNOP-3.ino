@@ -1,5 +1,5 @@
-/* -----------------  Dit is de code voor knop 1.         ----------------- */
-/* -----------------  Deze bevindt zich bij de Genesis.    ----------------- */
+/* -----------------  Dit is de code voor knop 3.         ----------------- */
+/* -----------------  Deze bevindt zich bij de magazijn   ----------------- */
 
 #include <SPI.h>
 #include <Wire.h>
@@ -18,9 +18,19 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //ints & bool
 int btn1 = 0;
+int btn2 = 0;
+int btn3 = 0;
+int btn4 = 0;
 const int btn1P = 21;
+const int btn2P = 20;
+const int btn3P = 1;
+const int btn4P = 2;
 bool noQueue = false;
-bool btnPressed = false;
+bool btn1Pressed = false;
+bool btn2Pressed = false;
+bool btn3Pressed = false;
+bool btn4Pressed = false;
+
 
 //wifi setup
 const char* ssid = "SSID";                  // De WiFi-SSID
@@ -40,6 +50,10 @@ const unsigned long QUERY_INTERVAL = 1000; // nu staat de Query op elke 1 second
 //////////////////////////////////////// SETUP \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/
 void setup() {
   Serial.begin(9600);
+  pinMode(btn1P, INPUT);
+  pinMode(btn2P, INPUT);
+  pinMode(btn3P, INPUT);
+  pinMode(btn4P, INPUT);
   
 //scherm instellen
   Wire.begin(I2C_SDA, I2C_SCL);
@@ -56,7 +70,6 @@ void setup() {
   display.clearDisplay();
   display.display();
   delay(700);
-  pinMode(btn1P, INPUT);
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0,0);
@@ -169,6 +182,9 @@ void connectToTelnetServer() {
 //////////////////////////////////////// CODE VOOR HET HELE SYSTEEM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/
 void loop() {
   btn1 = digitalRead(btn1P);
+  btn2 = digitalRead(btn2P);
+  btn3 = digitalRead(btn3P);
+  btn4 = digitalRead(btn4P);
   
   //checked of telnet nogsteeds verbonden is
   if (telnetClient.connected() && isTelnetVerbonden) { 
@@ -216,13 +232,34 @@ void loop() {
       laatsteQuerytijd = millis();// Update de laatste query tijd
     }
 
-    if (btn1 == 1){
-      btnPressed = true;
+    if (btn1 == 1 && btn2 == 0 && btn3 == 0 && btn4 == 0){
+      btn1Pressed = true;
+    }
+    if (btn2 == 1 && btn1 == 0 && btn3 == 0 && btn4 == 0){
+      btn2Pressed = true;
+    }
+    if (btn3 == 1 && btn1 == 0 && btn2 == 0 && btn4 == 0){
+      btn3Pressed = true;
+    }
+    if (btn4 == 1 && btn1 == 0 && btn2 == 0 && btn3 == 0){
+      btn4Pressed = true;
     }
 
-    if (btnPressed && noQueue){
+    if (btn1Pressed && noQueue){
       btn1a();
-      Serial.println("btnPressed && noQueue");
+      Serial.println("btn1Pressed && noQueue");
+    }
+    if (btn2Pressed && noQueue){
+      btn2a();
+      Serial.println("btn2Pressed && noQueue");
+    }
+    if (btn3Pressed && noQueue){
+      btn3a();
+      Serial.println("btn3Pressed && noQueue");
+    }
+    if (btn4Pressed && noQueue){
+      btn4a();
+      Serial.println("btn4Pressed && noQueue");
     }
   } else { //probeert opnieuw te verbinden met telnet
     Serial.println("Verbinding met Telnet-server mislukt. Controleer IP en poort.");
@@ -238,7 +275,7 @@ void btn1a(void) {
   telnetClient.println(message1);  // Stuur input via Telnet
   Serial.println("AMR:");
   Serial.print("wordt geroepen");
-  String message2 = "patrolOnce BTN-G"; //start de route genaamd BTN-G
+  String message2 = "patrolOnce BTN-M1"; //Stuurt een commando om de route BTN-M1 te starten
   telnetClient.println(message2);
   display.clearDisplay();
   display.setCursor(0,0);
@@ -246,5 +283,55 @@ void btn1a(void) {
   display.print("wordt geroepen");
   display.display();
   delay(6000);
-  btnPressed = false;
+  btn1Pressed = false;
+}
+
+void btn2a(void) {
+  String message1 = "outputOn o16";
+  telnetClient.println(message1);  // Stuur input via Telnet
+  Serial.println("AMR:");
+  Serial.print("wordt geroepen");
+  String message2 = "patrolOnce BTN-M2"; 
+  telnetClient.println(message2);
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.println("AMR");
+  display.print("wordt geroepen");
+  display.display();
+  delay(6000);
+  String message3 = "outputOff o16";
+  telnetClient.println(message3);
+  btn2Pressed = false;
+}
+
+void btn3a(void) {
+  String message1 = "outputOn o16";
+  telnetClient.println(message1);  // Stuur input via Telnet
+  Serial.println("AMR:");
+  Serial.print("wordt geroepen");
+  String message2 = "patrolOnce BTN-M2"; 
+  telnetClient.println(message2);
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.println("AMR");
+  display.print("wordt geroepen");
+  display.display();
+  delay(6000);
+  btn3Pressed = false;
+}
+
+void btn4a(void) {
+  String message1 = "outputOn o16";
+  telnetClient.println(message1);  // Stuur input via Telnet
+  Serial.println("AMR:");
+  Serial.print("wordt geroepen");
+  String message2 = "patrolOnce BTN-M2"; 
+  telnetClient.println(message2);
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.println("AMR");
+  display.print("wordt geroepen");
+  display.display();
+  delay(6000);
+  btn4Pressed = false;
 }
